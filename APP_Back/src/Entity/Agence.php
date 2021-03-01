@@ -14,7 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 * @ApiResource(
 * attributes={"security"="is_granted('ROLE_ADMIN')", 
 *             "security_message"="Seul un admin peut faire cette action.",
-*             "normalization_context"={"groups"={"agence_detail_read", "agence_read"}}
+*             "normalization_context"={"groups"={"agence_detail_read", "agence_read"}},
+*             "denormalization_context"={"groups"={"agence_detail_write", "agence_write"}}
 *            },
 *     collectionOperations={
 *         "post"={ "path"="user/agences"},
@@ -35,13 +36,14 @@ class Agence
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"agence_detail_read", "agence_read"})
+     * @Groups({"agence_detail_read", "agence_read", "agence_detail_write", "agence_write"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"agence_detail_read", "agence_read"})
+     * @Groups({"agence_detail_write", "user_write"})
      * 
      */
     private $nom;
@@ -49,6 +51,8 @@ class Agence
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"agence_detail_read", "agence_read"})
+     * @Groups({"agence_detail_write", "agence_write"})
+     * 
      * 
      */
     private $telephone;
@@ -56,6 +60,8 @@ class Agence
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"agence_detail_read", "agence_read"})
+     * @Groups({"agence_detail_write", "agence_write"})
+     * 
      * 
      */
     private $adresse;
@@ -63,6 +69,8 @@ class Agence
     /**
      * @ORM\Column(type="float")
      * @Groups({"agence_detail_read", "agence_read"})
+     * @Groups({"agence_detail_write", "agence_write"})
+     * 
      * 
      */
     private $latitude;
@@ -70,6 +78,8 @@ class Agence
     /**
      * @ORM\Column(type="float")
      * @Groups({"agence_detail_read", "agence_read"})
+     * @Groups({"agence_detail_write", "agence_write"})
+     * 
      * 
      */
     private $longitude;
@@ -77,9 +87,18 @@ class Agence
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="agence")
      * @Groups({"agence_detail_read", "agence_read"})
+     * @Groups({"agence_detail_write", "agence_write"})
+     * 
      * 
      */
     private $users;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"agence_detail_write", "agence_write"})
+     * 
+     */
+    private $statut=true;
 
     public function __construct()
     {
@@ -177,6 +196,18 @@ class Agence
                 $user->setAgence(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatut(): ?bool
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(bool $statut): self
+    {
+        $this->statut = $statut;
 
         return $this;
     }

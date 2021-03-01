@@ -11,16 +11,55 @@ use Symfony\Component\Serializer\Annotation\Groups;
 * @ORM\Entity(repositoryClass=TransactionsRepository::class)
 * @ApiResource(
 * attributes={
-*             "normalization_context"={"groups"={"transaction_detail_read", "transaction_read"}}
+*             "normalization_context"={"groups"={"transaction_detail_read", "transaction_read"}},
+*             "denormalization_context"={"groups"={"transaction_detail_read", "transaction_read"}}
 *            },
 *     collectionOperations={
-*         "post"={ "path"="user/transactions"},
-*         "get"={"path"="user/transactions"}
+*         "recharger_compte"={ 
+*                             "method"="post",
+*                             "path"="user/transactions/recharge",
+*                             "security"="is_granted('ROLE_ADMIN') or is_granted('ROLE_CAISSIER')",
+*                             "security_message"="Vous n'etes pas autorié"
+*                             },
+*         "transaction"={
+*                             "method"="post",
+*                             "path"="user/transactions",
+*                             "security"="is_granted('ROLE_ADMINAGENCE') or is_granted('ROLE_USERAGENCE')",
+*                             "security_message"="Vous n'etes pas autorié"
+*                             },
+*         "get_transaction"={
+*                             "method"="get",
+*                             "path"="user/transactions",
+*                             "security"="is_granted('ROLE_ADMIN')",
+*                             "security_message"="Vous n'etes pas autorié"
+*                             },
 *     },
 *     
 *     itemOperations={
-*         "get"={"path"="user/transactions/{id}"}, 
-*         "put"={"path"="user/transactions/{id}"}
+*         "getTransaction_id"={
+*                           "method"="get",
+*                           "path"="user/transactions/{id}", 
+*                           "security"="is_granted('ROLE_ADMINAGENCE') or is_granted('ROLE_USERAGENCE')",
+*                           "security_message"="Vous n'etes pas autorié"
+*                             },
+*         "put_transaction"={
+*                           "method"="put",
+*                           "path"="user/transactions/{id}", 
+*                           "security"="is_granted('ROLE_ADMINAGENCE') or is_granted('ROLE_USERAGENCE')",
+*                           "security_message"="Vous n'etes pas autorié"
+*                           },
+*         "getTansactions _agence"={
+*                           "method"="get",
+*                           "path"="user/transactions/agence", 
+*                           "security"="is_granted('ROLE_ADMINAGENCE')",
+*                           "security_message"="Vous n'etes pas autorié" 
+*                            },
+*         "getTansactions _user_agence"={
+*                           "method"="get",
+*                           "path"="user/transactions/useragence", 
+*                           "security"="is_granted('ROLE_ADMINAGENCE' && object.agence === user.agence)",
+*                           "security_message"="Vous n'etes pas autorié" 
+*                           }
 *  }
 * )
  */
@@ -35,128 +74,128 @@ class Transactions
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $code_trans;
+    private $codeTrans;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $nom_complet_emet;
+    private $nomCompletEmet;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $numero_cni;
+    private $numeroCni;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $telephone_emet;
+    private $telephoneEmet;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $montant_envoye;
+    private $montantEnvoye;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
     private $frais;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $frais_depot;
+    private $fraisDepot;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $frais_retrait;
+    private $fraisRetrait;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $frais_etat;
+    private $fraisEtat;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $frais_systeme;
+    private $fraisSysteme;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $nom_complet_benef;
+    private $nomCompletBenef;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $telephone_benef;
+    private $telephoneBenef;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $montant_retire;
+    private $montantRetire;
 
     /**
      * @ORM\Column(type="date")
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $date_envoie;
+    private $dateEnvoie;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $date_retrait;
+    private $dateRetrait;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"transaction_detail_read", "transaction_read"})
      * 
      */
-    private $type_transaction;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"transaction_detail_read", "transaction_read"})
-     * 
-     */
-    private $statut_tansaction;
+    private $typeTransaction;
 
     /**
      * @ORM\ManyToOne(targetEntity=Comptes::class, inversedBy="transactions")
+     * @Groups({"transaction_detail_read", "transaction_read"})
+     * 
      */
     private $compte;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transactions")
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -165,60 +204,60 @@ class Transactions
 
     public function getCodeTrans(): ?string
     {
-        return $this->code_trans;
+        return $this->codeTrans;
     }
 
-    public function setCodeTrans(string $code_trans): self
+    public function setCodeTrans(string $codeTrans): self
     {
-        $this->code_trans = $code_trans;
+        $this->codeTrans = $codeTrans;
 
         return $this;
     }
 
     public function getNomCompletEmet(): ?string
     {
-        return $this->nom_complet_emet;
+        return $this->nomCompletEmet;
     }
 
-    public function setNomCompletEmet(string $nom_complet_emet): self
+    public function setNomCompletEmet(string $nomCompletEmet): self
     {
-        $this->nom_complet_emet = $nom_complet_emet;
+        $this->nomCompletEmet = $nomCompletEmet;
 
         return $this;
     }
 
     public function getNumeroCni(): ?string
     {
-        return $this->numero_cni;
+        return $this->numeroCni;
     }
 
-    public function setNumeroCni(string $numero_cni): self
+    public function setNumeroCni(string $numeroCni): self
     {
-        $this->numero_cni = $numero_cni;
+        $this->numeroCni = $numeroCni;
 
         return $this;
     }
 
     public function getTelephoneEmet(): ?string
     {
-        return $this->telephone_emet;
+        return $this->telephoneEmet;
     }
 
-    public function setTelephoneEmet(string $telephone_emet): self
+    public function setTelephoneEmet(string $telephoneEmet): self
     {
-        $this->telephone_emet = $telephone_emet;
+        $this->telephoneEmet = $telephoneEmet;
 
         return $this;
     }
 
     public function getMontantEnvoye(): ?int
     {
-        return $this->montant_envoye;
+        return $this->montantEnvoye;
     }
 
-    public function setMontantEnvoye(int $montant_envoye): self
+    public function setMontantEnvoye(int $montantEnvoye): self
     {
-        $this->montant_envoye = $montant_envoye;
+        $this->montantEnvoye = $montantEnvoye;
 
         return $this;
     }
@@ -237,132 +276,120 @@ class Transactions
 
     public function getFraisDepot(): ?int
     {
-        return $this->frais_depot;
+        return $this->fraisDepot;
     }
 
-    public function setFraisDepot(int $frais_depot): self
+    public function setFraisDepot(int $fraisDepot): self
     {
-        $this->frais_depot = $frais_depot;
+        $this->fraisDepot = $fraisDepot;
 
         return $this;
     }
 
     public function getFraisRetrait(): ?int
     {
-        return $this->frais_retrait;
+        return $this->fraisRetrait;
     }
 
-    public function setFraisRetrait(int $frais_retrait): self
+    public function setFraisRetrait(int $fraisRetrait): self
     {
-        $this->frais_retrait = $frais_retrait;
+        $this->fraisRetrait = $fraisRetrait;
 
         return $this;
     }
 
     public function getFraisEtat(): ?int
     {
-        return $this->frais_etat;
+        return $this->fraisEtat;
     }
 
-    public function setFraisEtat(int $frais_etat): self
+    public function setFraisEtat(int $fraisEtat): self
     {
-        $this->frais_etat = $frais_etat;
+        $this->fraisEtat = $fraisEtat;
 
         return $this;
     }
 
     public function getFraisSysteme(): ?int
     {
-        return $this->frais_systeme;
+        return $this->fraisSysteme;
     }
 
-    public function setFraisSysteme(int $frais_systeme): self
+    public function setFraisSysteme(int $fraisSysteme): self
     {
-        $this->frais_systeme = $frais_systeme;
+        $this->fraisSysteme = $fraisSysteme;
 
         return $this;
     }
 
     public function getNomCompletBenef(): ?string
     {
-        return $this->nom_complet_benef;
+        return $this->nomCompletBenef;
     }
 
-    public function setNomCompletBenef(string $nom_complet_benef): self
+    public function setNomCompletBenef(string $nomCompletBenef): self
     {
-        $this->nom_complet_benef = $nom_complet_benef;
+        $this->nomCompletBenef = $nomCompletBenef;
 
         return $this;
     }
 
     public function getTelephoneBenef(): ?string
     {
-        return $this->telephone_benef;
+        return $this->telephoneBenef;
     }
 
-    public function setTelephoneBenef(string $telephone_benef): self
+    public function setTelephoneBenef(string $telephoneBenef): self
     {
-        $this->telephone_benef = $telephone_benef;
+        $this->telephoneBenef = $telephoneBenef;
 
         return $this;
     }
 
     public function getMontantRetire(): ?int
     {
-        return $this->montant_retire;
+        return $this->montantRetire;
     }
 
-    public function setMontantRetire(int $montant_retire): self
+    public function setMontantRetire(int $montantRetire): self
     {
-        $this->montant_retire = $montant_retire;
+        $this->montantRetire = $montantRetire;
 
         return $this;
     }
 
     public function getDateEnvoie(): ?\DateTimeInterface
     {
-        return $this->date_envoie;
+        return $this->dateEnvoie;
     }
 
-    public function setDateEnvoie(\DateTimeInterface $date_envoie): self
+    public function setDateEnvoie(\DateTimeInterface $dateEnvoie): self
     {
-        $this->date_envoie = $date_envoie;
+        $this->dateEnvoie = $dateEnvoie;
 
         return $this;
     }
 
     public function getDateRetrait(): ?\DateTimeInterface
     {
-        return $this->date_retrait;
+        return $this->dateRetrait;
     }
 
-    public function setDateRetrait(?\DateTimeInterface $date_retrait): self
+    public function setDateRetrait(?\DateTimeInterface $dateRetrait): self
     {
-        $this->date_retrait = $date_retrait;
+        $this->dateRetrait = $dateRetrait;
 
         return $this;
     }
 
     public function getTypeTransaction(): ?string
     {
-        return $this->type_transaction;
+        return $this->typeTransaction;
     }
 
-    public function setTypeTransaction(string $type_transaction): self
+    public function setTypeTransaction(string $typeTransaction): self
     {
-        $this->type_transaction = $type_transaction;
-
-        return $this;
-    }
-
-    public function getStatutTansaction(): ?string
-    {
-        return $this->statut_tansaction;
-    }
-
-    public function setStatutTansaction(string $statut_tansaction): self
-    {
-        $this->statut_tansaction = $statut_tansaction;
+        $this->typeTransaction = $typeTransaction;
 
         return $this;
     }
@@ -375,6 +402,18 @@ class Transactions
     public function setCompte(?Comptes $compte): self
     {
         $this->compte = $compte;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

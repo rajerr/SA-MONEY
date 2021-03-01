@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -35,7 +37,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"user_detail_read", "user_read", "profile_detail_read", "profile_read"})
+     * @Groups({"user_detail_read", "user_read", "profile_detail_read", "profile_read", "agence_detail_read", "agence_read"})
      */
     private $id;
 
@@ -53,6 +55,7 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups({"user_detail_write", "user_write"})
      */
     private $password;
 
@@ -106,8 +109,27 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity=Agence::class, inversedBy="users")
+     * @Groups({"user_detail_write", "user_write", "user_detail_read", "user_read"})
+     * 
      */
     private $agence;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Transactions::class, mappedBy="user")
+     */
+    private $transactions;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Comptes::class, inversedBy="users")
+     * @Groups({"user_detail_write", "user_write","user_detail_read", "user_read"})
+     * 
+     */
+    private $compte;
+
+    public function __construct()
+    {
+        $this->transactions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -265,6 +287,48 @@ class User implements UserInterface
     public function setAgence(?Agence $agence): self
     {
         $this->agence = $agence;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transactions[]
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transactions $transaction): self
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions[] = $transaction;
+            $transaction->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transactions $transaction): self
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getUser() === $this) {
+                $transaction->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCompte(): ?Comptes
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(?Comptes $compte): self
+    {
+        $this->compte = $compte;
 
         return $this;
     }

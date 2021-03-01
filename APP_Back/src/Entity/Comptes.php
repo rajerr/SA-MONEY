@@ -14,7 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 * @ApiResource(
 * attributes={"security"="is_granted('ROLE_ADMIN')", 
 *             "security_message"="Seul un admin peut faire cette action.",
-*             "normalization_context"={"groups"={"compte_detail_read", "compte_read"}}
+*             "normalization_context"={"groups"={"compte_detail_read", "compte_read"}},
+*             "denormalization_context"={"groups"={"compte_write", "compte_detail_write"}}
 *            },
 *     collectionOperations={
 *         "post"={ "path"="user/comptes"},
@@ -36,47 +37,46 @@ class Comptes
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"compte_detail_read", "compte_read"})
+     * @Groups({"compte_write", "compte_detail_write"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"compte_detail_read", "compte_read"})
+     * @Groups({"compte_write", "compte_detail_write"})
      * 
      */
-    private $numero_cpte;
+    private $numeroCpte;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"compte_detail_read", "compte_read"})
+     * @Groups({"compte_write", "compte_detail_write"})
      * 
      */
-    private $solde;
+    public $solde;
 
     /**
      * @ORM\Column(type="date")
      * @Groups({"compte_detail_read", "compte_read"})
+     * @Groups({"compte_write", "compte_detail_write"})
      * 
      */
-    private $date_creation;
+    private $dateCreation;
 
     /**
      * @ORM\Column(type="boolean")
      * @Groups({"compte_detail_read", "compte_read"})
      * 
      */
-    private $statut;
+    private $statut = true;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comptes")
-     * @Groups({"compte_detail_read", "compte_read"})
-     * 
-     */
-    private $user;
 
     /**
      * @ORM\OneToOne(targetEntity=Agence::class, cascade={"persist", "remove"})
      * @Groups({"compte_detail_read", "compte_read"})
+     * @Groups({"compte_write", "compte_detail_write"})
      * 
      */
     private $agence;
@@ -88,9 +88,17 @@ class Comptes
      */
     private $transactions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="compte")
+     * @Groups({"compte_detail_read", "compte_read"})
+     * 
+     */
+    private $users;
+
     public function __construct()
     {
         $this->transactions = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -100,12 +108,12 @@ class Comptes
 
     public function getNumeroCpte(): ?string
     {
-        return $this->numero_cpte;
+        return $this->numeroCpte;
     }
 
-    public function setNumeroCpte(string $numero_cpte): self
+    public function setNumeroCpte(string $numeroCpte): self
     {
-        $this->numero_cpte = $numero_cpte;
+        $this->numeroCpte = $numeroCpte;
 
         return $this;
     }
@@ -124,12 +132,12 @@ class Comptes
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $date_creation): self
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
@@ -146,17 +154,6 @@ class Comptes
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
 
     public function getAgence(): ?Agence
     {
@@ -194,6 +191,36 @@ class Comptes
             // set the owning side to null (unless already changed)
             if ($transaction->getCompte() === $this) {
                 $transaction->setCompte(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setCompte($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getCompte() === $this) {
+                $user->setCompte(null);
             }
         }
 

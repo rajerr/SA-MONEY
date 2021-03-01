@@ -19,6 +19,18 @@ class ComptesRepository extends ServiceEntityRepository
         parent::__construct($registry, Comptes::class);
     }
 
+    public function getCompte($id){
+        $query = $this->createQueryBuilder('c')
+            ->select('c,a')
+            ->innerJoin('c.agence','a')
+            ->where('a.id=?1')
+            ->setParameter('1',$id)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $query;
+    }
+
     // /**
     //  * @return Comptes[] Returns an array of Comptes objects
     //  */

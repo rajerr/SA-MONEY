@@ -1,0 +1,201 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-auto>
+          <ion-item *ngIf="['userRoleIsADMINAGENCE']"  [routerLink]="['/admin']" routerLinkActive="router-link-active">
+            <ion-icon name="home-outline"></ion-icon>
+          </ion-item>
+          <ion-item *ngIf="['userRoleIsUSERAGENCE']"  [routerLink]="['/user']" routerLinkActive="router-link-active">
+            <ion-icon name="home-outline"></ion-icon>
+          </ion-item>
+        </ion-col>
+        <ion-col col-auto>
+          <img src="./assets/images/Logo MONEY SA 1.png" alt=""><br>
+        </ion-col >
+        <ion-col col-auto>
+        </ion-col>
+      </ion-row>
+      </ion-grid>
+  </ion-toolbar>
+  <ion-item>
+    <ion-icon name="arrow-undo-circle-outline" slot="start"></ion-icon>
+    <ion-label>Retrait</ion-label>
+  </ion-item>
+</ion-header>
+<!-- <ion-content>
+    <form [formGroup]="RetraitForm" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-input #Trans  name="codeTrans" (ionChange)="getTransactionByCodeTrans(Trans.value)" type="text" placeholder="code " formControlName="codeTrans"  [(ngModel)]="codeTrans"></ion-input>
+      </ion-item>
+      <ion-segment [(ngModel)]="choix" (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="beneficiaire">
+          <ion-label>Beneficiaire</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="emetteur">
+          <ion-label>Emetteur</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+      <ion-grid [ngSwitch]="choix">
+        <div padding *ngSwitchCase="'beneficiaire'">
+          <ion-row justify-content-center>
+              <div padding>
+                <ion-item>
+                  <ion-label>CNI</ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-input  name="numeroCni" type="text" placeholder="N° cni beneficiaire" formControlName="numeroCni"  [(ngModel)]="numeroCni" required></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Nom et Prenom</ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label name="nomCompletBenef" readonly="readonly" type="text" placeholder="le nom complet beneficiaire"></ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Telephone</ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label name="telephoneBenef" readonly="readonly" type="text" placeholder="telephone beneficiaire"></ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Montant</ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label name="montantRetire" readonly="readonly" type="number" placeholder="Montant retirer"></ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Date Envoie</ion-label>
+                  <ion-label name="dateEnvoie" readonly="readonly" type="text" placeholder="24/06/2021"></ion-label>
+                </ion-item>
+              </div>
+          </ion-row>
+        </div>
+        <div padding *ngSwitchCase="'emetteur'">
+          <ion-row justify-content-center>
+              <div padding>
+                <ion-item>
+                  <ion-label>CNI</ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label  name="numeroCni" readonly="readonly" type="text" placeholder="N° cni emeteur" formControlName="numeroCni"  [(ngModel)]="numeroCni"></ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Nom et Prenom</ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label name="nomCompletEmet" readonly="readonly" type="text" placeholder="le nom complet emeteur"></ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Telephone</ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label name="telephoneEmet" readonly="readonly" type="text" placeholder="telephone emeteur"></ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Montant</ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label name="montantRetire" readonly="readonly" type="number" placeholder="Montant retirer"></ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Date Envoie</ion-label>
+                  <ion-label name="dateEnvoie"  readonly="readonly" type="text" placeholder="24/06/2021"></ion-label>
+                </ion-item>
+              </div>
+          </ion-row>
+        </div>
+        <ion-button  type="submit" expand="block">Retirer</ion-button>
+      </ion-grid>
+    </form>
+</ion-content> -->
+
+
+
+
+<ion-content>
+  <ion-segment [(ngModel)]="choix" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="emetteur">
+      <ion-label>Emetteur</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="beneficiaire">
+      <ion-label>Beneficiaire</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+    <form [formGroup]="RetraitForm" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-input #Trans  name="codeTrans" (ionChange)="getTransactionByCodeTrans(Trans.value)" type="text" placeholder="code " formControlName="codeTrans"  [(ngModel)]="codeTrans"></ion-input>
+      </ion-item>
+      <ion-grid [ngSwitch]="choix">
+        <div padding *ngSwitchCase="'beneficiaire'">
+          <ion-row justify-content-center>
+            <div padding>
+              <ion-item>
+                <ion-label>CNI</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-input  name="numeroCni" type="text" placeholder="N° cni beneficiaire" formControlName="numeroCni"  [(ngModel)]="numeroCni" required></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label>Nom et Prenom</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label name="nomCompletBenef" readonly="readonly" type="text" placeholder="le nom complet beneficiaire"></ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Telephone</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label name="telephoneBenef" readonly="readonly" type="text" placeholder="telephone beneficiaire"></ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Montant</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label name="montantRetire" readonly="readonly" type="number" placeholder="Montant retirer"></ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Date Envoie</ion-label>
+                <ion-label name="dateEnvoie" readonly="readonly" type="text" placeholder="24/06/2021"></ion-label>
+              </ion-item>
+            </div>
+        </ion-row>
+        </div>
+        <div padding *ngSwitchCase="'emetteur'">
+          <ion-row justify-content-center>
+            <div padding>
+              <ion-item>
+                <ion-label>CNI</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label  name="numeroCni" readonly="readonly" type="text" placeholder="N° cni emeteur"></ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Nom et Prenom</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label name="nomCompletEmet" readonly="readonly" type="text" placeholder="le nom complet emeteur"></ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Telephone</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label name="telephoneEmet" readonly="readonly" type="text" placeholder="telephone emeteur"></ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Montant</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label name="montantRetire" readonly="readonly" type="number" placeholder="Montant retirer"></ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>Date Envoie</ion-label>
+                <ion-label name="dateEnvoie"  readonly="readonly" type="text" placeholder="24/06/2021"></ion-label>
+              </ion-item>
+            </div>
+        </ion-row>
+        </div>
+        <ion-button  type="submit" expand="block">Suivant</ion-button>
+      </ion-grid>
+    </form>
+</ion-content>

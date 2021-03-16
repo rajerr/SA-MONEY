@@ -1,0 +1,43 @@
+ion-row.ion-head{
+    --background-color: #FFFFFF;
+    border:bold orange;
+    position: absolute;
+    width: 414px;
+    height: 382;
+    left: 96px;
+    top: 97px;
+}
+ion-image{
+    position: absolute;
+    width: 143px;
+    height: 109px;
+    left: 136px;
+    top: 121px;
+}
+
+ion-label{
+    position: absolute;
+    width: 134px;
+    height: 3px;
+    left: 56px;
+    top: 182px;
+    text-decoration: underline   #07AEEF;
+}
+ion-grid{
+    position: absolute;
+    width: 94%;
+    left: 3%;
+    top: 330px;
+}
+.link{
+    text-decoration: none;
+    color: #07AEEF;
+    top: 180px;
+    left: 20px;
+    position: absolute;
+}
+ion-button{
+    position: absolute;
+    left: 90px;
+    top: 317px;
+}

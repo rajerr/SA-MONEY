@@ -1,0 +1,103 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-auto>
+          <a [routerLink]="['/menu-admin']">
+            <ion-icon name="list-outline"></ion-icon>
+          </a>
+        </ion-col>
+        <ion-col col-auto>
+          <img src="./assets/images/Logo MONEY SA 1.png" alt=""><br>
+        </ion-col>
+        <ion-col col-auto>
+          <ion-icon name="person-circle-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+      </ion-grid>
+  </ion-toolbar>
+  <ion-item>
+    <ion-row>
+      <div padding>
+        <ion-label>Mon solde disponible</ion-label>
+      </div>
+      <div padding>
+        <ion-row> 
+          <ion-col>
+            <ion-item>
+            <ion-input name="solde" readonly =" readonly ">150 000 FCFA</ion-input>
+            <ng-content> </ng-content> 
+                  <a class="type-toggle" (click)="toggleShow()"> 
+                    <ion-icon class = "show-option" [hidden] = "showPassword" name = "eye-off-outline"> </ion-icon> 
+                    <ion-icon class = "hide-option" [hidden] = "! showPassword" name = "eye-outline"> </ion-icon> 
+                  </a>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </div>
+      <div padding>
+        <ion-label>Mise à jour le 22/07/2021 à 13h43</ion-label> 
+      </div>
+    </ion-row>
+  </ion-item>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item type="button" [routerLink]="['/depot']" routerLinkActive="router-link-active">
+      <ion-icon name="arrow-redo-circle-outline" slot="start"></ion-icon>
+      <ion-label>Depot</ion-label>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-item>
+    <ion-item type="button" [routerLink]="['/retrait']" routerLinkActive="router-link-active">
+      <ion-icon name="arrow-undo-circle-outline" slot="start"></ion-icon>
+      <ion-label>Retrait</ion-label>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-item>
+    <ion-item type="button" [routerLink]="['/transactions/details']" routerLinkActive="router-link-active">
+      <ion-icon name="sync-outline" slot="start"></ion-icon>
+      <ion-label>Mes Transaction</ion-label>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-item>
+    <ion-item type="button" [routerLink]="['/transactions']" routerLinkActive="router-link-active">
+      <ion-icon name="repeat-outline" slot="start"></ion-icon>
+      <ion-label>Toutes Transactions</ion-label>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-item>
+    <ion-item type="button" [routerLink]="['/commissions']" routerLinkActive="router-link-active">
+      <ion-icon name="wallet-outline" slot="start"></ion-icon>
+      <ion-label>Mes Commissions</ion-label>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-item>
+    <ion-item type="button" [routerLink]="['/calculateur']" routerLinkActive="router-link-active">
+      <ion-icon name="calculator-outline" slot="start"></ion-icon>
+      <ion-label >Calculateur de frais</ion-label>
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-item>
+    <ion-item type="button" [routerLink]="['/deconnexion']" routerLinkActive="router-link-active">
+      <ion-icon name="power-outline" slot="start"></ion-icon>
+      <ion-label>Deconnexion</ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-row>
+    <ion-col col-auto>
+      <ion-item type="button" [routerLink]="['/admin']" routerLinkActive="router-link-active">
+        <ion-icon name="home-outline"></ion-icon>
+      </ion-item>
+    </ion-col>
+    <ion-col col-auto>
+      <ion-item type="button" [routerLink]="['/transactions']" routerLinkActive="router-link-active">
+        <ion-icon name="reload-outline"></ion-icon>
+      </ion-item>
+    </ion-col>
+    <ion-col col-auto>
+      <ion-item type="button" [routerLink]="['/commissions']" routerLinkActive="router-link-active">
+        <ion-icon name="wallet-outline"></ion-icon>
+      </ion-item>
+    </ion-col>
+    <ion-col col-auto>
+      <ion-item type="button" [routerLink]="['/calculateur']" routerLinkActive="router-link-active">
+        <ion-icon name="calculator-outline"></ion-icon>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-content>

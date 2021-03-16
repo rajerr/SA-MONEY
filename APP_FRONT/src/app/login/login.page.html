@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <img src="./assets/images/Logo MONEY SA 1.png" alt=""><br>
+  </ion-toolbar>
+  <ion-title>login</ion-title>
+</ion-header>
+<ion-content>
+  <form [formGroup]="LoginForm" (ngSubmit)="onLogin()">
+    <ion-grid>
+      <div padding>
+        <ion-row color="primary" justify-content-center>
+          <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+            <div padding>
+                <ion-label>Telephone</ion-label>
+              <ion-item>
+                <ion-input  name="name" type="text" placeholder="77 850 32 90" formControlName="username"  [(ngModel)]="username"></ion-input>
+              </ion-item>
+              <ion-label>Password</ion-label>
+                <ion-item>
+                  <ion-input name="password" type="password" placeholder="*******" formControlName="password"  [(ngModel)]="password"></ion-input>
+                  <ng-content> </ng-content> 
+                  <a class="type-toggle" (click)="toggleShow()"> 
+                    <ion-icon class = "show-option" [hidden] = "showPassword" name = "eye-off-outline"> </ion-icon> 
+                    <ion-icon class = "hide-option" [hidden] = "! showPassword" name = "eye-outline"> </ion-icon> 
+                  </a>
+                </ion-item>
+            </div>
+          </ion-col>
+            <a class="link" color="primary" href="#">Mot de passe oublié?</a>
+        </ion-row>
+      </div>
+      <div padding>
+        <ion-button color="secondary" size="large" type="submit" expand="block">Se connecter</ion-button>
+      </div>
+    </ion-grid>
+  </form>
+</ion-content>

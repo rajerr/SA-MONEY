@@ -1,0 +1,17 @@
+ion-content  {
+    --background: rgb(7, 184, 228);
+}
+ion-content ion-list ion-item{
+    --background: rgb(7, 184, 228);
+}
+ion-list{
+    --background: rgb(7, 184, 228);
+}
+ion-icon{
+    color: azure;
+    font-style: var(--background);
+}
+ion-content ion-list ion-item ion-label{
+    color: rgb(240, 247, 247);
+    font-weight: bold;
+}

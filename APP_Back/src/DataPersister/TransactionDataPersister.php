@@ -44,7 +44,6 @@ class TransactionDataPersister implements ContextAwareDataPersisterInterface
      */
     public function persist($data, array $context = [])
     {
-
         if ($context['collection_operation_name']==="recharger_compte") {
             $compte = $data->getCompte();
             $compte->setSolde($compte->getSolde() + $data->getMontantEnvoye());
@@ -54,19 +53,17 @@ class TransactionDataPersister implements ContextAwareDataPersisterInterface
             $this->manager->persist($data);
             $this->manager->persist($compte);
             $this->manager->flush();
-
-            return $data;
         }
 
         if ($context['collection_operation_name']==="transaction") {
             $frais = $this->frais->getFrais($data->getMontantEnvoye());
-            $fraisEtat = $frais*0.04;
-            $fraisSysteme = $frais*0.03;
-            $fraisDepot = $frais*0.01;
-            $fraisRetrait = $frais*0.02;
+            $fraisEtat = $frais*0.4;
+            $fraisSysteme = $frais*0.3;
+            $fraisDepot = $frais*0.1;
+            $fraisRetrait = $frais*0.2;
             $mntenvoie = $frais + $data->getMontantEnvoye();
             $mtnRetire = $mntenvoie - $frais;
-            if ($data->getTypeTransaction() === "Depot") {
+            if ($data->getTypeTransaction() == "Depot") {
                 $agence = $this->currentUser->getUser()->getAgence();
                 $compte = $this->compteRepos->getCompte($agence->getId());
                 $compte->setSolde(($compte->getSolde()-$data->getMontantEnvoye())+ $fraisDepot);
@@ -82,6 +79,7 @@ class TransactionDataPersister implements ContextAwareDataPersisterInterface
                      ->setDateEnvoie(new \DateTime ('now'))
                      ->setUser($this->currentUser->getUser());
                 $this->manager->persist($data);
+                $this->manager->flush();
 
             }
             if ($data->getTypeTransaction() === "Retrait") {
@@ -124,9 +122,9 @@ class TransactionDataPersister implements ContextAwareDataPersisterInterface
                     $compteRetrait->setSolde($compteRetrait->getSolde() + $transaction->getMontantRetire() + $fraisRetrait);
                     $this->manager->persist($data);
                     $this->manager->persist($compteRetrait);
+                    $this->manager->flush();
                 }
             }
-            $this->manager->flush();
 
             return $data;
         }

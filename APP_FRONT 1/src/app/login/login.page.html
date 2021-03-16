@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-row class="ion-head"color="primary" justify-content-center>
+    <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+      <div padding>
+      <img src="/assets/image/Logo MONEY SA 1.png" alt=""><br>
+          <ion-label>Login</ion-label>
+      </div>
+    </ion-col>
+  </ion-row>
+<ion-row>
+  <form>
+    <ion-grid>
+      <div padding>
+        <ion-row color="primary" justify-content-center>
+          <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+            <div padding>
+              <ion-item>
+              <ion-label class="tel">Telephone</ion-label>
+                <ion-input  name="name" type="text" placeholder="Your phone" ></ion-input>
+              </ion-item>
+              <ion-item>
+              <ion-label>Password</ion-label>
+                <ion-input name="password" type="password" placeholder="Password" ></ion-input>
+              </ion-item>
+            </div>
+          </ion-col>
+            <a class="link" color="primary" href="http://">Mot de passe oublié?</a>
+        </ion-row>
+      </div>
+      <div padding>
+        <ion-button color="secondary"  size="large" type="submit" [disabled]="form.invalid" expand="block">Se connecter</ion-button>
+      </div>
+    </ion-grid>
+  </form>
+</ion-row>
+</ion-content>

@@ -1,0 +1,43 @@
+ion-content{
+  --background: url("./../../assets/images/bg.jpg") no-repeat center center / cover;
+}
+ion-item{
+  position: absolute;
+  width: 202px;
+  height: 202px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.15);
+  }
+
+#container {
+  text-align: center;
+  background: #FFFFFF;
+  width: 202px;
+  height: 202px;
+  border-radius: 50%;
+
+  position: absolute;
+  left: 25%;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+
+  color: #8c8c8c;
+
+  margin: 0;
+}
+
+#container a {
+  text-decoration: none;
+}

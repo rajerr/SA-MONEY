@@ -1,0 +1,44 @@
+ion-header {
+    position: absolute;
+    height: 30%;
+    box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.15);
+    background: #ffffff;
+    text-align: center;
+  }
+
+  img{
+      height: 50px;
+  }
+ion-header ion-item {
+    text-align: center;
+    color: #07aeef;
+    font-size: large;
+
+}
+ion-header ion-item ion-label{
+    text-align: center;
+    color: rgb(17, 17, 17);
+    font-size: 60%;
+}
+ion-content{
+    top: 200px;
+    --background:#ffffff;
+}
+ion-list{
+    top: 50px;
+}
+ion-item{
+    top: 10px;
+}
+ion-content ion-icon{
+    text-align: center;
+    color: #FA4A0C;
+}
+ion-content ion-row ion-icon{
+    top: 40px;
+    height: 40px;
+    color: #636e85;
+}
+ion-content ion-row ion-col{
+    top: 40px;
+}

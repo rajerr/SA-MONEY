@@ -1,0 +1,7 @@
+{
+  "name": "APP_FRONT",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

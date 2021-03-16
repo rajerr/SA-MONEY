@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 * @ApiResource(
 * attributes={
 *             "normalization_context"={"groups"={"transaction_detail_read", "transaction_read"}},
-*             "denormalization_context"={"groups"={"transaction_detail_read", "transaction_read"}}
+*             "denormalization_context"={"groups"={"transaction_detail_write", "transaction_write"}}
 *            },
 *     collectionOperations={
 *         "recharger_compte"={ 
@@ -25,12 +25,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 *                             "method"="post",
 *                             "path"="user/transactions",
 *                             "security"="is_granted('ROLE_ADMINAGENCE') or is_granted('ROLE_USERAGENCE')",
-*                             "security_message"="Vous n'etes pas autorié"
+*                             "security_message"="Vous n'etes pas autorisé"
 *                             },
 *         "get_transaction"={
 *                             "method"="get",
 *                             "path"="user/transactions",
-*                             "security"="is_granted('ROLE_ADMIN')",
+*                             "security"="is_granted('ROLE_ADMIN') or is_granted('ROLE_ADMINGENCE') or is_granted('ROLE_USERAGENCE')",
 *                             "security_message"="Vous n'etes pas autorié"
 *                             },
 *     },
@@ -40,7 +40,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 *                           "method"="get",
 *                           "path"="user/transactions/{id}", 
 *                           "security"="is_granted('ROLE_ADMINAGENCE') or is_granted('ROLE_USERAGENCE')",
-*                           "security_message"="Vous n'etes pas autorié"
+*                           "security_message"="Vous n'etes pas autorié",
+*                           "defaults"={"id"=null}
 *                             },
 *         "put_transaction"={
 *                           "method"="put",
@@ -69,131 +70,133 @@ class Transactions
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $codeTrans;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $nomCompletEmet;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $numeroCni;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $telephoneEmet;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $montantEnvoye;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $frais;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $fraisDepot;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $fraisRetrait;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $fraisEtat;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $fraisSysteme;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $nomCompletBenef;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $telephoneBenef;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $montantRetire;
 
     /**
      * @ORM\Column(type="date")
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $dateEnvoie;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $dateRetrait;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $typeTransaction;
 
     /**
      * @ORM\ManyToOne(targetEntity=Comptes::class, inversedBy="transactions")
-     * @Groups({"transaction_detail_read", "transaction_read"})
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
      * 
      */
     private $compte;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transactions")
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
+     * 
      */
     private $user;
 

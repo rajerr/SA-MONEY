@@ -3,12 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use App\Repository\TransactionsRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
 * @ORM\Entity(repositoryClass=TransactionsRepository::class)
+* @ApiFilter(BooleanFilter::class, properties={"annuler"})
 * @ApiResource(
 * attributes={
 *             "normalization_context"={"groups"={"transaction_detail_read", "transaction_read"}},
@@ -32,7 +35,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 *                             "path"="user/transactions",
 *                             "security"="is_granted('ROLE_ADMIN') or is_granted('ROLE_ADMINGENCE') or is_granted('ROLE_USERAGENCE')",
 *                             "security_message"="Vous n'etes pas autorié"
-*                             },
+*                             }
 *     },
 *     
 *     itemOperations={
@@ -43,24 +46,30 @@ use Symfony\Component\Serializer\Annotation\Groups;
 *                           "security_message"="Vous n'etes pas autorié",
 *                           "defaults"={"id"=null}
 *                             },
-*         "put_transaction"={
+*         "putTransaction"={
 *                           "method"="put",
-*                           "path"="user/transactions/{id}", 
+*                           "path"="user/transactions/code", 
 *                           "security"="is_granted('ROLE_ADMINAGENCE') or is_granted('ROLE_USERAGENCE')",
-*                           "security_message"="Vous n'etes pas autorié"
+*                           "security_message"="Vous n'etes pas autorisé"
 *                           },
-*         "getTansactions _agence"={
+*         "transactionsAgence"={
 *                           "method"="get",
 *                           "path"="user/transactions/agence", 
 *                           "security"="is_granted('ROLE_ADMINAGENCE')",
-*                           "security_message"="Vous n'etes pas autorié" 
+*                           "security_message"="Vous n'etes pas autorisé" 
 *                            },
-*         "getTansactions _user_agence"={
+*         "transactionsUser"={
 *                           "method"="get",
 *                           "path"="user/transactions/useragence", 
-*                           "security"="is_granted('ROLE_ADMINAGENCE' && object.agence === user.agence)",
-*                           "security_message"="Vous n'etes pas autorié" 
-*                           }
+*                           "security"="is_granted('ROLE_ADMINAGENCE' or is_granted('ROLE_USERAGENCE' && object.agence === user.agence)",
+*                           "security_message"="Vous n'etes pas autorisé" 
+*                           },
+*         "annuler_transaction"={
+*                             "method"="put",
+*                             "path"="user/transactions/annuler",
+*                             "security"="is_granted('ROLE_ADMIN') or is_granted('ROLE_ADMINAGENCE') or is_granted('ROLE_USERAGENCE')",
+*                             "security_message"="Vous n'etes pas autorié"
+*                             }
 *  }
 * )
  */
@@ -199,6 +208,20 @@ class Transactions
      * 
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
+     * 
+     */
+    private $statut;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"transaction_detail_read", "transaction_read", "transaction_write"})
+     * 
+     */
+    private $annuler;
 
     public function getId(): ?int
     {
@@ -417,6 +440,30 @@ class Transactions
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getStatut(): ?bool
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(bool $statut): self
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    public function getAnnuler(): ?bool
+    {
+        return $this->annuler;
+    }
+
+    public function setAnnuler(bool $annuler): self
+    {
+        $this->annuler = $annuler;
 
         return $this;
     }

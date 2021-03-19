@@ -37,7 +37,7 @@ class Comptes
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups({"compte_detail_read", "compte_read"})
-     * @Groups({"compte_write", "compte_detail_write"})
+     * @Groups({"compte_write", "compte_detail_write", "transaction_read"})
      */
     private $id;
 

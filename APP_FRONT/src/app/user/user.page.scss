@@ -35,8 +35,9 @@ ion-content ion-icon{
     color: #FA4A0C;
 }
 ion-content ion-row ion-icon{
-    top: 40px;
+    position: absolute;
     height: 40px;
+    left: 20px;
     color: #636e85;
 }
 ion-content ion-row ion-col{

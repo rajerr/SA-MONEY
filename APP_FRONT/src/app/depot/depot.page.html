@@ -3,10 +3,10 @@
     <ion-grid>
       <ion-row>
         <ion-col col-auto>
-          <ion-item *ngIf="['userRoleIsCAISSIER || userRoleIsCAISSIER']"  [routerLink]="['/admin']" routerLinkActive="router-link-active">
+          <ion-item *ngIf="['userRoleIsADMINAGENCE']"  [routerLink]="['/admin']" routerLinkActive="router-link-active">
             <ion-icon name="home-outline"></ion-icon>
           </ion-item>
-          <ion-item *ngIf="['userRoleIsADMINAGENCE || userRoleIsUSERAGENCE']"  [routerLink]="['/user']" routerLinkActive="router-link-active">
+          <ion-item *ngIf="['userRoleIsUSERAGENCE']"  [routerLink]="['/user']" routerLinkActive="router-link-active">
             <ion-icon name="home-outline"></ion-icon>
           </ion-item>
         </ion-col>
@@ -34,9 +34,7 @@
   </ion-segment>
     <form [formGroup]="DepotForm" (ngSubmit)="onSubmit()">
       <ion-grid [ngSwitch]="choix">
-        <div padding *ngSwitchCase="'beneficiaire'">
-          <ion-row justify-content-center>
-              <div padding>
+          <ion-list justify-content-center *ngSwitchCase="'beneficiaire'">
                 <ion-item>
                   <ion-label>Nom et Prenom Beneficiaire</ion-label>
                 </ion-item>
@@ -49,13 +47,9 @@
                 <ion-item>
                   <ion-input name="telephoneBenef" type="text" placeholder="telephone Beneficiaire" formControlName="telephoneBenef"  [(ngModel)]="telephoneBenef"></ion-input>
                 </ion-item>
-              </div>
-            <ion-button  type="submit" expand="block">Suivant</ion-button>
-          </ion-row>
-        </div>
-        <div padding *ngSwitchCase="'emetteur'">
-          <ion-row justify-content-center>
-              <div padding>
+          </ion-list>
+          <ion-button  type="submit" expand="block">Suivant</ion-button>
+          <ion-list justify-content-center *ngSwitchCase="'emetteur'">
                 <ion-item>
                   <ion-label>CNI</ion-label>
                 </ion-item>
@@ -86,9 +80,7 @@
                   <ion-label>Total</ion-label>
                   <ion-input [value]="montantTotal" name="montantEnvoye" type="number" placeholder="0000" formControlName="montantEnvoye"  [(ngModel)]="montantEnvoye"></ion-input>
                 </ion-item>
-              </div>
-          </ion-row>
-        </div>
+          </ion-list>
       </ion-grid>
     </form>
 </ion-content>

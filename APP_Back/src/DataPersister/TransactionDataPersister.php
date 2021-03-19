@@ -1,6 +1,7 @@
 <?php
 namespace App\DataPersister;
 
+use Twilio\Rest\Client;
 use App\Entity\Transactions;
 use App\Services\FraisService;
 use App\Repository\ComptesRepository;
@@ -48,7 +49,7 @@ class TransactionDataPersister implements ContextAwareDataPersisterInterface
             $compte = $data->getCompte();
             $compte->setSolde($compte->getSolde() + $data->getMontantEnvoye());
             $data->setDateEnvoie(new \DateTime('now'));
-            $data->setTypeTransaction('Recharge');
+            $data->setTypeTransaction('Depot');
             $data->setUser($this->currentUser->getUser());
             $this->manager->persist($data);
             $this->manager->persist($compte);
@@ -63,10 +64,14 @@ class TransactionDataPersister implements ContextAwareDataPersisterInterface
             $fraisRetrait = $frais*0.2;
             $mntenvoie = $frais + $data->getMontantEnvoye();
             $mtnRetire = $mntenvoie - $frais;
-            if ($data->getTypeTransaction() == "Depot") {
-                $agence = $this->currentUser->getUser()->getAgence();
-                $compte = $this->compteRepos->getCompte($agence->getId());
+
+            $agence = $this->currentUser->getUser()->getAgence();
+            $compte = $this->compteRepos->getCompte($agence->getId());
+
+            if ($data->getTypeTransaction() == "Depot" & $data->getMontantEnvoye()< $compte->getSolde()) {
                 $compte->setSolde(($compte->getSolde()-$data->getMontantEnvoye())+ $fraisDepot);
+                $compte->setDateCreation(new \DateTime('now'));
+
                 $data->setCodeTrans(random_int(1,1000000000))
                      ->setTypeTransaction('Depot')
                      ->setFrais($frais)
@@ -77,10 +82,26 @@ class TransactionDataPersister implements ContextAwareDataPersisterInterface
                      ->setCompte($compte)
                      ->setMontantEnvoye($mntenvoie)
                      ->setDateEnvoie(new \DateTime ('now'))
-                     ->setUser($this->currentUser->getUser());
+                     ->setUser($this->currentUser->getUser())
+                     ->setStatut(false)
+                     ->setAnnuler(false);
+
+                $sid = "AC01ffe2ceb9e87dc5fe55ef320fa26436" ; // Votre compte SID de www.twilio.com/console 
+                $token = "0d6379ba6c368ef4f08656f412064468" ; // Votre jeton d'authentification de www.twilio.com/console 
+                // $client = new  Twilio \Rest\Client ( $sid , $token );
+                $twilio = new Client($sid, $token);
+                $message = $twilio -> messages -> create (
+                '+221784654636' ,// Textez ce numéro 
+                [ 'from' => '+12702015769' , // D'un numéro Twilio valide 
+                    'body' => 'Votre envoie de: '.$mntenvoie.' a été effectué avec succes. le $codeTrans de transaction. montant à rétirer mtnRetire' 
+                ] 
+                ); 
                 $this->manager->persist($data);
                 $this->manager->flush();
-
+            }
+            if ($data->getTypeTransaction() == "Depot" && $data->getMontantEnvoye()< $compte->getSolde()) {
+                return new JsonResponse('Votre solde ne vous permet pas de faire le depot');
+                
             }
             if ($data->getTypeTransaction() === "Retrait") {
                 $code = $data->getCodeTrans();
@@ -100,8 +121,10 @@ class TransactionDataPersister implements ContextAwareDataPersisterInterface
                 $fraisSysteme = $transaction->getFraisSysteme();
                 $fraisEtat = $transaction->getFraisEtat();
                 $fraisDepot = $transaction->getFraisDepot();
-                if ($code) {
-                   $data->setUser($user)
+                $statut = $transaction->getStatut();
+                $annuler = $transaction->getAnnuler();
+                    if ($code && $statut === false && $annuler ===false) {
+                        $data->setUser($user)
                         ->setCodeTrans($code)
                         ->setMontantEnvoye($mntenvoie)
                         ->setMontantRetire($mtnRetire)
@@ -117,33 +140,35 @@ class TransactionDataPersister implements ContextAwareDataPersisterInterface
                         ->setFraisSysteme($fraisSysteme)
                         ->setFraisEtat($fraisEtat)
                         ->setFraisDepot($fraisDepot)
-                        ->setFraisRetrait($fraisRetrait);
+                        ->setFraisRetrait($fraisRetrait)
+                        ->setStatut(true)
+                        ->setAnnuler(false);
                     $compteRetrait = $this->compteRepos->getCompte($agence->getId());
                     $compteRetrait->setSolde($compteRetrait->getSolde() + $transaction->getMontantRetire() + $fraisRetrait);
+                    $compteRetrait->setDateCreation(new \DateTime('now'));
+                    $transaction->setStatut(1);
+
+                    $sid = "AC01ffe2ceb9e87dc5fe55ef320fa26436" ; // Votre compte SID de www.twilio.com/console 
+                    $token = "0d6379ba6c368ef4f08656f412064468" ; // Votre jeton d'authentification de www.twilio.com/console 
+                    $twilio = new Client($sid, $token);
+                    $message = $twilio -> messages -> create (
+                    '+221784654636' ,// Textez ce numéro 
+                    [ 'from' => '+12702015769' , // D'un numéro Twilio valide 
+                        'body' => 'Votre Retrait de: '.$mntenvoie.' a été effectué avec succes. le code transaction'.$code.'  montant retiré '.$mtnRetire.'FCFA. le '
+                    ] 
+                    ); 
                     $this->manager->persist($data);
                     $this->manager->persist($compteRetrait);
-                    $this->manager->flush();
+                    $this->manager->persist($transaction);
+                    $this->manager->flush();                
+                }
+                else{
+                    return new JsonResponse("errro de traitement", Response::HTTP_BAD_REQUEST, [], true);
                 }
             }
 
             return $data;
         }
-        
-        // $solde = $data->getSolde();
-        // if($solde>=700000){
-        //     $data->setSolde($solde);
-        // }
-        // else{
-        //     return new JsonResponse("Le montant a initialisé doit être superieur à 700 000", Response::HTTP_BAD_REQUEST, [], true);
-        // }
-        // $data ->setNumeroCpte(uniqid("CMP_SA_M_"));
-        // $data -> setDateCreation(new \DateTime('now'));
-        // $data -> setStatut(true);
-
-        // $this->manager->persist($data);
-        // $this->manager->flush();
-
-
     }
     /**
      * {@inheritdoc}

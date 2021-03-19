@@ -10,7 +10,7 @@ export class FraisService {
 
   constructor() { }
 
-  getFrais(montant){
+  getFrais(montant:number){
       for(let i=0; i<this.$tab_montant_max.length; i++){
           if(montant<= this.$tab_montant_max[i]){
               return this.$tab_frais[i];

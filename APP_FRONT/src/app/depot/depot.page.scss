@@ -1,9 +1,4 @@
-:root {
-    --ion-safe-area-top: 20px;
-    --ion-safe-area-bottom: 22px;
-  }
-  
-ion-content{
+ ion-content{
     color:  #51BFD0;
 }
 ion-header ion-item{
@@ -15,17 +10,17 @@ ion-header ion-toolbar ion-grid ion-row ion-col ion-icon{
     left: 10px;
 }
 ion-header ion-icon{
-    position: absolute;
+    position: relative;
     text-align: center;
     color: #51BFD0;
-    left: 100px;
+    left: 115px;
 }
 
 img{
     height: 40px;
 }
-ion-row{
-    text-align: center;
+ion-grid{
+    width: 90%;
     border-radius: 10%;
 }
 ion-content ion-label{
@@ -46,4 +41,10 @@ ion-button{
 ion-input{
     width: 100%;
     left: 3%;
+}
+
+ion-segment{
+    --background:#e7f9fc;
+    border-radius: 20px;
+    height: 35px;
 }

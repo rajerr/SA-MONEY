@@ -32,10 +32,6 @@ const routes: Routes = [
     loadChildren: () => import('./menu-user/menu-user.module').then( m => m.MenuUserPageModule)
   },
   {
-    path: 'transactions',
-    loadChildren: () => import('./transactions/transactions.module').then( m => m.TransactionsPageModule)
-  },
-  {
     path: 'depot',
     loadChildren: () => import('./depot/depot.module').then( m => m.DepotPageModule)
   },
@@ -52,13 +48,29 @@ const routes: Routes = [
     loadChildren: () => import('./show-string/show-string.module').then( m => m.ShowStringPageModule)
   },
   {
-    path: 'confirm-depot',
-    loadChildren: () => import('./confirm-depot/confirm-depot.module').then( m => m.ConfirmDepotPageModule)
+    path: 'calculateur',
+    loadChildren: () => import('./calculateur/calculateur.module').then( m => m.CalculateurPageModule)
   },
   {
-    path: 'confirm-retrait',
-    loadChildren: () => import('./confirm-retrait/confirm-retrait.module').then( m => m.ConfirmRetraitPageModule)
+    path: 'transactions-admin',
+    loadChildren: () => import('./transactions-admin/transactions-admin.module').then( m => m.TransactionsAdminPageModule)
   },
+  {
+    path: 'transactions-user',
+    loadChildren: () => import('./transactions-user/transactions-user.module').then( m => m.TransactionsUserPageModule)
+  },
+  {
+    path: 'commissions',
+    loadChildren: () => import('./commissions/commissions.module').then( m => m.CommissionsPageModule)
+  },
+  {
+    path: 'calculateur-user',
+    loadChildren: () => import('./calculateur-user/calculateur-user.module').then( m => m.CalculateurUserPageModule)
+  },
+  {
+    path: 'bloquer-transaction',
+    loadChildren: () => import('./bloquer-transaction/bloquer-transaction.module').then( m => m.BloquerTransactionPageModule)
+  }
 ];
 
 @NgModule({

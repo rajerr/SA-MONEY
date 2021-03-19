@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-auto>
+          <ion-item *ngIf="['userRoleIsADMINAGENCE']"  [routerLink]="['/admin']" routerLinkActive="router-link-active">
+            <ion-icon name="home-outline"></ion-icon>
+          </ion-item>
+        </ion-col>
+        <ion-col col-auto>
+          <img src="./assets/images/Logo MONEY SA 1.png" alt=""><br>
+        </ion-col >
+        <ion-col col-auto>
+        </ion-col>
+      </ion-row>
+      </ion-grid>
+  </ion-toolbar>
+  <ion-item>
+    <ion-icon name="wallet-outline" slot="start"></ion-icon>
+    <ion-label>Commissions</ion-label>
+  </ion-item>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <ion-col>
+      <ion-select value="notifications" interface="action-sheet" placeholder="Choisir type">
+        <ion-select-option value="Depot">Depot</ion-select-option>
+        <ion-select-option value="Retrait">Retrait</ion-select-option>
+      </ion-select>
+    </ion-col>
+    <ion-col>
+      <ion-datetime placeholder="Du"></ion-datetime>
+    </ion-col>
+    <ion-col>
+      <ion-datetime placeholder="Au"></ion-datetime>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item>
+        <ion-label>Date</ion-label>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item>
+        <ion-label>Type</ion-label>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item>
+        <ion-label>Frais D</ion-label>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item>
+        <ion-label>Frais R</ion-label>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngFor="let t of transactions">
+    <ion-col>
+      <ion-item>
+        <ion-label>{{t?.dateEnvoie}}</ion-label>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item>
+        <ion-label>{{t?.typeTransaction}}</ion-label>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item>
+        <ion-label>{{t?.fraisDepot}}</ion-label>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <ion-item>
+        <ion-label>{{t?.fraisRetrait}}</ion-label>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-item class="total">
+    <ion-label>Total</ion-label>
+    <ion-label class="t">0FCFA</ion-label>
+  </ion-item>
+  <ion-row class="row">
+    <ion-col col-auto>
+      <ion-item type="button" [routerLink]="['/admin']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true}">
+        <ion-icon name="home-outline"></ion-icon>
+      </ion-item>
+    </ion-col>
+    <ion-col col-auto>
+      <ion-item type="button" [routerLink]="['/transactions-admin']" routerLinkActive="active">
+        <ion-icon name="reload-outline"></ion-icon>
+      </ion-item>
+    </ion-col>
+    <ion-col col-auto>
+      <ion-item type="button" [routerLink]="['/commissions']" routerLinkActive="active">
+        <ion-icon name="wallet-outline"></ion-icon>
+      </ion-item>
+    </ion-col>
+    <ion-col col-auto>
+      <ion-item type="button" [routerLink]="['/calculateur']" routerLinkActive="active">
+        <ion-icon name="calculator-outline"></ion-icon>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-content>

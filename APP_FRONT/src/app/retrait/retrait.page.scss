@@ -20,8 +20,8 @@ ion-header ion-icon{
 img{
     height: 40px;
 }
-ion-row{
-    text-align: center;
+ion-grid{
+    width: 90%;
     border-radius: 10%;
 }
 ion-content ion-label{
@@ -31,15 +31,21 @@ ion-content ion-input{
     font-size: 70%;
 }
 ion-button{
-    --background: #FA4A0C;
+    --background: #fd5f26;
     border-radius: 70px;
     width: 234px;
+    left: 35px;
     height: 40px;
     position: absolute;
-    left: 30px;
-    top: 390px;
+    top: 420px;
 }
 ion-input{
     width: 100%;
     left: 3%;
+}
+ion-segment{
+    --background:#cef1f7;
+    border-radius: 20px;
+}
+ion-segment-button{
 }

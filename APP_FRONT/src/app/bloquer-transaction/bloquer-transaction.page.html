@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-auto>
+          <ion-item *ngIf="['userRoleIsADMINAGENCE']"  [routerLink]="['/admin']" routerLinkActive="router-link-active">
+            <ion-icon name="home-outline"></ion-icon>
+          </ion-item>
+          <ion-item *ngIf="['userRoleIsUSERAGENCE']"  [routerLink]="['/user']" routerLinkActive="router-link-active">
+            <ion-icon name="home-outline"></ion-icon>
+          </ion-item>
+        </ion-col>
+        <ion-col col-auto>
+          <img src="./assets/images/Logo MONEY SA 1.png" alt=""><br>
+        </ion-col >
+        <ion-col col-auto>
+        </ion-col>
+      </ion-row>
+      </ion-grid>
+  </ion-toolbar>
+  <ion-item>
+    <ion-icon name="remove-circle-outline" slot="start"></ion-icon>
+    <ion-label>Bloquer Transaction</ion-label>
+  </ion-item>
+</ion-header>
+<ion-content>
+  <ion-segment [(ngModel)]="choix" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="emetteur">
+      <ion-label>Emetteur</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="beneficiaire">
+      <ion-label>Beneficiaire</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+    <form [formGroup]="Form" (ngSubmit)="onAnnuler()">
+      <ion-item>
+        <ion-input #Trans  name="codeTrans" (ionChange)="getTransactionByCode(Trans.value)" type="text" placeholder="code " formControlName="codeTrans" required [(ngModel)]="codeTrans"></ion-input>
+      </ion-item>
+      <ion-grid [ngSwitch]="choix">
+          <ion-list justify-content-center *ngSwitchCase="'beneficiaire'">
+                <ion-label>CNI</ion-label>
+              <ion-item>
+                <ion-input  [value]="numeroCni" name="numeroCni" readonly="readonly" type="text" placeholder="N° cni beneficiaire"></ion-input>
+              </ion-item>
+              <ion-label>Nom et Prenom</ion-label>
+              <ion-item>
+                <ion-input [value]="nomCompletBenef" name="nomCompletBenef" readonly="readonly" type="text" placeholder="le nom complet beneficiaire"></ion-input>
+              </ion-item>
+              <ion-label>Telephone</ion-label>
+              <ion-item>
+                <ion-input [value]="telephoneBenef" name="telephoneBenef" readonly="readonly" type="text" placeholder="telephone beneficiaire" ></ion-input>
+              </ion-item>
+              <ion-label>Montant</ion-label>
+              <ion-item>
+                <ion-input [value]="montantRetire" name="montantRetire" readonly="readonly" type="number" placeholder="Montant retirer"></ion-input>
+              </ion-item>
+        </ion-list>
+          <ion-list justify-content-center *ngSwitchCase="'emetteur'">
+              <ion-label>Nom et Prenom</ion-label>
+              <ion-item>
+                <ion-input [value]="nomCompletEmet" name="nomCompletEmet" readonly="readonly" type="text" placeholder="le nom complet emeteur"></ion-input>
+              </ion-item>
+              <ion-label>Telephone</ion-label>
+              <ion-item>
+                <ion-input [value]="telephoneEmet" name="telephoneEmet" readonly="readonly" type="text" placeholder="telephone emeteur"></ion-input>
+              </ion-item>
+              <ion-label>Montant</ion-label>
+              <ion-item>
+                <ion-input [value]="montantRetire" name="montantRetire" readonly="readonly" type="number" placeholder="Montant retirer"></ion-input>
+              </ion-item>
+              <ion-label>Date Envoie</ion-label>
+              <ion-item>
+                <ion-input [value]="dateEnvoie" name="dateEnvoie"  readonly="readonly" type="text" placeholder="24/06/2021"></ion-input>
+              </ion-item>
+        </ion-list>
+        <ion-row>
+          <ion-button  type="submit" expand="block">Annuler</ion-button>
+        </ion-row> 
+      </ion-grid>
+    </form>
+</ion-content>
